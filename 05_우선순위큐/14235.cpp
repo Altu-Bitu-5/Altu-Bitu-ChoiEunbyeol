@@ -7,7 +7,7 @@ int main(){
     ios::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
 
-    int n, a;
+    int n, a, value; // value 선언 위치 변경
     priority_queue <int> pq;
 
     // 입력
@@ -28,7 +28,6 @@ int main(){
             }
         }
         else {//거점에서 선물 충전
-            int value;
             for(int i = 0; i < a; i++){
                 cin >> value;
                 pq.push(value);
