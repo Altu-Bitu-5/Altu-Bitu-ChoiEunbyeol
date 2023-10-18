@@ -1,11 +1,13 @@
-#include <iostream> 
+#include <iostream>
 #include <vector>
 #define MAX 19
 
 using namespace std;
 
-vector<vector<int>> map(MAX, vector<int>(MAX));
-vector<vector<int>> moving = { {0,1}, {1,0}, {1,1}, {-1,1} };
+typedef vector<vector<int>> vec_veci;
+
+vec_veci map(MAX, vector<int>(MAX));
+vec_veci moving = { {0,1}, {1,0}, {1,1}, {-1,1} };
 vector<vector<vector<bool>>> visited(MAX, vector<vector<bool>>(MAX, vector<bool>(4, false))); // 바둑판 칸, 방향
 
 bool isInRange(int x, int y){
@@ -20,9 +22,7 @@ int dfs(int r, int c, int mov, int cnt) { // 재귀 dfs
         if (cnt == 5) {
             return map[r][c]; // 연속 5개 바둑알 색 반환
         }
-        else {
-            return 0;
-        }
+        return 0;
     }
     return dfs(nr, nc, mov, cnt + 1);
 }
@@ -30,14 +30,15 @@ int dfs(int r, int c, int mov, int cnt) { // 재귀 dfs
 pair<int, pair<int, int>> checkWinner() {
     for(int i = 0; i < MAX; i++) {
         for(int j = 0; j < MAX; j++) {
-            if(map[j][i] != 0) {
-                for(int mov = 0; mov < 4; mov++) {
-                    if(visited[j][i][mov]) { // 방문했으면 넘어감
-                        continue;
-                    }
-                    if(dfs(j, i, mov, 1) != 0) { // 비어있지 않은 칸일 때
-                        return {map[j][i], {j + 1, i + 1}}; // 색, 위치 반환
-                    }
+            if(map[j][i] == 0) {
+                continue;
+            }
+            for(int mov = 0; mov < 4; mov++) {
+                if(visited[j][i][mov]) { // 방문했으면 넘어감
+                    continue;
+                }
+                if(dfs(j, i, mov, 1) != 0) { // 비어있지 않은 칸일 때
+                    return {map[j][i], {j + 1, i + 1}}; // 색, 위치 반환
                 }
             }
         }
@@ -62,10 +63,9 @@ int main() {
     // 출력
     if(result.first != 0) {
         cout << result.first << '\n' << result.second.first << ' ' << result.second.second;
+        return 0;
     }
-    else {
-        cout << 0;
-    }
+    cout << 0;
 
     return 0;
 }
